@@ -1,7 +1,7 @@
 // const sayHello = require("./hello")
 
 
-// sayHello("Trueline inSTITUTE");
+// sayHello("Trueline inSTITUTE WHAT IS YOUR QUERY");
 // sayHello``
 
 
