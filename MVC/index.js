@@ -1,21 +1,18 @@
 const express = require("express");
-
-const mongoose = require('mongoose');
-
 const app = express();
 
 app.use(express.json());
-
-mongoose.connect('mongodb://127.0.0.1:27017/Ujas');
-
-const { userCreate, userGet } = require("./controllers/userController");
-
+const { db } = require("./database/db")
+const { userCreate, userGet, loginUser } = require("./controllers/userController");
+const { categoryCreate } = require("./controllers/categoryController");
 
 // User API 
 app.post("/userData", userCreate);
+app.post("/userLogin", loginUser);
 app.get("/userGet", userGet);
 
-
+// category API
+app.post("/categoryData", categoryCreate);
 
 // app.get("/getData", async (req, res) => {
 //     const data = await userModel.find();
