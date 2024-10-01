@@ -1,5 +1,8 @@
 const user = require("../models/userSchema.js");
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
+const privateKey = "#J$e$e$T&BhUvA"
+
 
 const userCreate = async (req, res) => {
 
@@ -7,7 +10,6 @@ const userCreate = async (req, res) => {
 
     const bpass = await bcrypt.hash(password, 12)
     // console.log("---->", bpass);
-
 
     const userData = {
         name: name,
@@ -45,7 +47,12 @@ const loginUser = async (req, res) => {
 
 
         if (userPassword) {
-            res.status(200).send({ message: "Login User ", data: userLogin });
+
+
+            const token = jwt.sign({ email: userLogin.email, password: userLogin.password }, privateKey, { expiresIn: '1h' })
+
+            res.status(200).send({ message: "User Login .. ", data: userLogin, token: token });
+
         } else {
             res.send("User Password Wrong !!")
         }
