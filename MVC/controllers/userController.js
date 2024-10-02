@@ -48,7 +48,6 @@ const loginUser = async (req, res) => {
 
         if (userPassword) {
 
-
             const token = jwt.sign({ email: userLogin.email, password: userLogin.password }, privateKey, { expiresIn: '1h' })
 
             res.status(200).send({ message: "User Login .. ", data: userLogin, token: token });
@@ -56,7 +55,6 @@ const loginUser = async (req, res) => {
         } else {
             res.send("User Password Wrong !!")
         }
-
 
     } catch (error) {
         res.send(error);
