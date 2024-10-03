@@ -4,9 +4,7 @@ const app = express();
 const bodyParser = require('body-parser')
 
 app.use(bodyParser.urlencoded({ extended: false }));
-const jwt = require('jsonwebtoken');
 
-const privateKey = "#J$e$e$T&BhUvA"
 
 
 // parse application/json
@@ -18,23 +16,7 @@ const { userCreate, userGet, loginUser } = require("./controllers/userController
 const { categoryCreate } = require("./controllers/categoryController");
 
 
-const verifyToken = async (req, res, next) => {
-    try {
-        const token = req.headers.authorization;
-
-        await jwt.verify(token, privateKey, (err) => {
-            if (err) {
-                res.send("User unauthorization")
-            } else {
-                next();
-            }
-        });
-
-    } catch (error) {
-        res.send(error);
-    }
-}
-
+const { verifyToken } = require("./Middleware/userAuth")
 
 // User API 
 app.post("/userData", userCreate);
@@ -42,7 +24,7 @@ app.post("/userLogin", loginUser);
 app.get("/userGet", verifyToken, userGet);
 
 // category API
-app.post("/categoryData", categoryCreate);
+app.post("/categoryData", verifyToken, categoryCreate);
 
 // app.get("/getData", async (req, res) => {
 //     const data = await userModel.find();

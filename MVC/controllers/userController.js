@@ -8,6 +8,31 @@ const userCreate = async (req, res) => {
 
     const { name, email, password, mobile_no } = req.body
 
+    if (!/^[a-zA-Z]+$/.test(name)) {
+        return res
+            .status(401)
+            .send({ message: "Name must contain only letters" });
+    }
+
+    // Validation for email: Simple format validation
+    if (!/^\S+@\S+\.\S+$/.test(email)) {
+        return res.status(401).send({ message: "Invalid email format" });
+    }
+
+    // Validation for password: At least 6 characters
+    if (password.length < 6) {
+        return res
+            .status(401)
+            .send({ message: "Password must be at least 6 characters long" });
+    }
+    
+    // Validation for mobile: Only numeric characters allowed and must be 10 digits long
+    if (!/^\d{10}$/.test(mobile_no)) {
+        return res.status(401).send({
+            message: "Mobile number must contain exactly 10 numeric digits",
+        });
+    }
+
     const bpass = await bcrypt.hash(password, 12)
     // console.log("---->", bpass);
 
