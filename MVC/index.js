@@ -2,9 +2,33 @@ const express = require("express");
 const app = express();
 
 const bodyParser = require('body-parser')
+const multer = require('multer')
+const path = require('path')
+
+app.use(express.static("./public"))
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Remove callback inside path.join
+        cb(null, path.join(__dirname, "./public/images"), function (err) {
+            if (err) {
+                throw err
+            }
+        });
+    },
+    filename: function (req, file, cb) {
+        const name = Date.now() + '-' + file.originalname;
+        cb(null, name, function (err) {
+            if (err) {
+                throw err
+            }
+        }); // No need for callback in cb function
+    }
+})
+
+const upload = multer({ storage: storage })
 
 
 // parse application/json
@@ -14,6 +38,7 @@ app.use(bodyParser.json());
 const { db } = require("./database/db")
 const { userCreate, userGet, loginUser } = require("./controllers/userController");
 const { categoryCreate } = require("./controllers/categoryController");
+const { createProduct } = require("./controllers/productController")
 
 
 const { verifyToken } = require("./Middleware/userAuth")
@@ -25,6 +50,8 @@ app.get("/userGet", verifyToken, userGet);
 
 // category API
 app.post("/categoryData", verifyToken, categoryCreate);
+
+app.post("/productData", upload.array('image'), createProduct)
 
 // app.get("/getData", async (req, res) => {
 //     const data = await userModel.find();
