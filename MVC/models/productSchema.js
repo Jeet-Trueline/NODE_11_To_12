@@ -21,7 +21,7 @@ const pro_detailsSchema = new mongoose.Schema({
     image: {
         type: Array,
         require: true,
-        validate: [imageLimit, 'you can only 5 product image store']
+        // validate: [imageLimit, 'you can only 5 product image store']
     },
     description: {
         type: String,
@@ -37,12 +37,11 @@ const pro_detailsSchema = new mongoose.Schema({
     }
 });
 
+// function imageLimit(val) {
 
-function imageLimit(val) {
+//     return val.length <= 5
 
-    return val.length <= 5
-
-}
+// }
 
 const pro_detailModel = mongoose.model("Product_Details", pro_detailsSchema);
 

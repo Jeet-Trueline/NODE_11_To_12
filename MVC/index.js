@@ -5,7 +5,7 @@ const bodyParser = require('body-parser')
 const multer = require('multer')
 const path = require('path')
 
-app.use(express.static("./public"))
+app.use(express.static("./public"));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -38,7 +38,7 @@ app.use(bodyParser.json());
 const { db } = require("./database/db")
 const { userCreate, userGet, loginUser } = require("./controllers/userController");
 const { categoryCreate } = require("./controllers/categoryController");
-const { createProduct } = require("./controllers/productController")
+const { createProduct, searchProduct } = require("./controllers/productController")
 
 
 const { verifyToken } = require("./Middleware/userAuth")
@@ -51,7 +51,8 @@ app.get("/userGet", verifyToken, userGet);
 // category API
 app.post("/categoryData", verifyToken, categoryCreate);
 
-app.post("/productData", upload.array('image'), createProduct)
+app.post("/productData", upload.array('image', 5), createProduct)
+app.get("/searchProduct", searchProduct)
 
 // app.get("/getData", async (req, res) => {
 //     const data = await userModel.find();

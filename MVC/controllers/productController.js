@@ -32,6 +32,29 @@ const createProduct = async (req, res) => {
 }
 
 
+const searchProduct = async (req, res) => {
+    try {
+
+        const search = req.body.search;
+
+        const searchdata = await pro_detailModel.find({ "product_name": { $regex: ".*" + search + ".*", $options: "i" } })
+
+        console.log(searchdata);
+
+        if (searchdata.length > 0) {
+            res.status(200).send({ message: "Product Data", data: searchdata })
+
+        } else {
+            res.status(401).send({ message: "Product Not Found" })
+        }
+
+
+    } catch (error) {
+        res.send(error)
+    }
+}
+
 module.exports = {
-    createProduct
+    createProduct,
+    searchProduct
 }
