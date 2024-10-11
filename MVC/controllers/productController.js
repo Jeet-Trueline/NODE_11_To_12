@@ -48,7 +48,6 @@ const searchProduct = async (req, res) => {
             res.status(401).send({ message: "Product Not Found" })
         }
 
-
     } catch (error) {
         res.send(error)
     }

@@ -36,7 +36,7 @@ app.use(bodyParser.json());
 
 // app.use(express.json());
 const { db } = require("./database/db")
-const { userCreate, userGet, loginUser } = require("./controllers/userController");
+const { userCreate, userGet, loginUser, sendEmail } = require("./controllers/userController");
 const { categoryCreate } = require("./controllers/categoryController");
 const { createProduct, searchProduct } = require("./controllers/productController")
 
@@ -53,6 +53,9 @@ app.post("/categoryData", verifyToken, categoryCreate);
 
 app.post("/productData", upload.array('image', 5), createProduct)
 app.get("/searchProduct", searchProduct)
+
+
+app.get("/getEmail", sendEmail);
 
 // app.get("/getData", async (req, res) => {
 //     const data = await userModel.find();

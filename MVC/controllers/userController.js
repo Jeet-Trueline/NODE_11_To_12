@@ -1,6 +1,7 @@
 const user = require("../models/userSchema.js");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const nodemailer = require("nodemailer");
 const privateKey = "#J$e$e$T&BhUvA"
 
 
@@ -25,7 +26,7 @@ const userCreate = async (req, res) => {
             .status(401)
             .send({ message: "Password must be at least 6 characters long" });
     }
-    
+
     // Validation for mobile: Only numeric characters allowed and must be 10 digits long
     if (!/^\d{10}$/.test(mobile_no)) {
         return res.status(401).send({
@@ -87,6 +88,7 @@ const loginUser = async (req, res) => {
 }
 
 const userGet = async (req, res) => {
+
     const data = await user.find();
 
     console.log(data);
@@ -95,8 +97,41 @@ const userGet = async (req, res) => {
 
 }
 
+
+const sendEmail = async (req, res) => {
+
+    const otp = Math.floor(100000 + Math.random() * 900000);
+
+    const transporter = await nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: 'bhuvajeet99@gmail.com',
+            pass: 'ddxp tuwl vorn bgio'
+        }
+    });
+
+    const mailOptions = {
+        from: 'bhuvajeet99@gmail.com',
+        to: 'ujasbaravaliya4411@gmail.com',
+        subject: 'Sending Email using Node.js',
+        text: String(otp),
+        html: `<h1>Welcome</h1><p>${otp}</p>`
+    };
+
+    await transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+            console.log(error);
+        } else {
+            console.log('Email sent: ' + info.response);
+        }
+    });
+
+}
+
+
 module.exports = {
     userCreate,
     userGet,
-    loginUser
+    loginUser,
+    sendEmail
 }
