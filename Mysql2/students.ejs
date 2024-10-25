@@ -14,13 +14,15 @@
 <body>
     <h1>Student List</h1>
 
-    <% if (students.length> 0) { %>
-        <table border="1" width="100%">
+    <table border="1" width="100%">
+        <% if (students.length> 0) { %>
+
             <tr>
                 <th>NO.</th>
                 <th>Name</th>
                 <th>Email</th>
                 <th>Password</th>
+                <th>Action</th>
             </tr>
 
             <% for (let i=0; i < students.length; i++) { %>
@@ -29,12 +31,13 @@
                     <td><%- students[i].name %></td>
                     <td><%- students[i].email %></td>
                     <td><%- students[i].password %></td>
+                    <td><a href="delete-student?id=<%- students[i].id %>">Delete</a></td>
                 </tr>
                 <% } %>
-        </table>
-        <% } else { %>
-            <h1>STUDENT DATA NOT FOUND!!!</h1>
-            <% } %>
+                    <% } else { %>
+                        <h1>STUDENT DATA NOT FOUND!!!</h1>
+                        <% } %>
+    </table>
 
 </body>
 
